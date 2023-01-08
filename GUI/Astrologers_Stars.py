@@ -4,89 +4,124 @@
 # Imports
 import os
 import sys
-from PIL import Image
-from tkinter.tix import Tk, Balloon
-from tkinter import END, RIDGE, Button, Entry, Frame, Label, Text, Toplevel, messagebox
+import customtkinter
+from customtkinter import CTk, CTkTextbox, END, CTkLabel, CTkFrame, CTkButton, CTkEntry, CTkScrollbar
+from tkinter import messagebox, CENTER, BOTH, RIGHT
+
+
+def switch_event():
+    global theme
+    theme = switch_var.get()
+    customtkinter.set_appearance_mode(theme)
+
+
+theme = "dark"
+# Setting the appearance mode of the window.
+customtkinter.set_default_color_theme("green")
 
 # creating a path for the icon of the window.
+
+
 def resource_path(relative_path):
     """Get absolute path to resource, works for dev and for PyInstaller."""
 
-    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(
+        os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
+
 path = resource_path("./Icon//Icon.ico")
+
+
+def segmented_button_callback(value):
+    pass
 
 
 def show(a):
     """Function to show the stars."""
 
-    type(a)                                                                     # Garbage calculation to make use of the unused argument.
+    # Garbage calculation to make use of the unused argument.
+    type(a)
 
-    try:                                                                        # Try block to check if the input of n.
+    # Try block to check if the input of n.
+    try:
         int(en1.get())
-    except Exception:                                                           # If the input is invalid, show an error message.
+    # If the input is invalid, show an error message.
+    except Exception:
         if len(en1.get()) == 0:
             messagebox.showerror("Error", "Please enter a number.")
         else:
             messagebox.showerror("Error", "Please enter a valid number.")
 
-    try:                                                                        # Try block to check if the input of b.
-        int(en2.get())
-    except Exception:                                                           # If the input is invalid, show an error message.
-        if len(en2.get()) == 0:
-            messagebox.showerror("Error", "Please enter a number.")
-        else:
-            messagebox.showerror("Error", "Please enter a valid number.")
-
-    if int(en1.get()) <= 0 or int(en2.get()) < 0:                               # If the input is invalid, show an error message.
+    # If the input is invalid, show an error message.
+    if int(en1.get()) <= 0 < 0:
         messagebox.showerror("Error", "Please enter a positive number.")
 
-    else:                                                                       # If the input is valid, show the stars.
+    # If the input is valid, show the stars.
+    else:
 
-        try:                                                                    # Try block.
-            n = int(en1.get())                                                  # Taking the input of n.
-            b = int(en2.get())                                                  # Taking the input of b.
-            b = bool(b)                                                         # Converting the integer b to bool.
+        # Try block.
+        try:
+            # Taking the input of n.
+            n = int(en1.get())
+            # Taking the input of b.
+            b = segemented_button.get()
+            # Converting the integer b to bool.
+            if b == "True":
+                b = True
+            else:
+                b = False
 
-        except Exception as e:                                                  # If the input is invalid, show an error message.
+        # If the input is invalid, show an error message.
+        except Exception as e:
             n = b = 0
             messagebox.showerror("Error", str(e))
 
-        top1 = Toplevel(root1)                                                  # Creating a new window.
+        # Creating a new window.
+        top1 = customtkinter.CTkToplevel(root1)
 
         # Setting the title of the window.
         top1.title("Stars Output")
 
         # Setting the icon of the window.
-        try:                                                                    # Try block to set the icon of the window.
+        # Try block to set the icon of the window.
+        try:
             top1.iconbitmap(path)
-        except Exception:                                                       # If the icon is not found, show an error message.
+        # If the icon is not found, show an error message.
+        except Exception:
             messagebox.showerror("Error", "icon.ico not found.")
-        
+
         # Setting the size of the window.
         top1.geometry("500x500")
         top1.minsize(200, 200)
         top1.maxsize(850, 700)
 
         # Creating a Text.
-        txt1 = Text(top1, relief=RIDGE, borderwidth=5, width=100, height=100)
-        txt1.pack(padx=20, pady=10)
+        txt1 = CTkTextbox(top1, width=100, height=100, wrap="none")
+        txt1.pack(pady=10, padx=10, fill=BOTH, expand=True)
 
         # Creating a list containing numbers from 1 to n.
         v = list(range(1, n + 1))
 
-        if not b:                                                            # If the bool value turns False, the list is reversed.
+        # If the bool value turns False, the list is reversed.
+        if not b:
             v.reverse()
 
-        for i in v:                                                          # A loop to print the required pattern.
-            txt1.insert(END, "*" * i + "\n")                                 # Inserting the stars in the Text.
+        # A loop to print the required pattern.
+        for i in v:
+            # Inserting the stars in the Text.
+            txt1.insert(END, "*" * i + "\n")
 
 
 if __name__ == '__main__':
     """The Main Function Begins."""
 
-    root1 = Tk()  # Creating main window root1.
+    root1 = CTk()  # Creating main window root1.
+
+    # Creating font to use.
+    headingFont = customtkinter.CTkFont(
+        family="Aerial", size=22, underline=True)
+    normalFont = customtkinter.CTkFont(family="Aerial", size=12)
 
     root1.title("Astrologer's Stars")  # Setting the title of root1.
 
@@ -103,54 +138,50 @@ if __name__ == '__main__':
     root1.minsize(400, 260)
     root1.maxsize(600, 450)
 
-    # Background Color of root 1.
-
-    root1['bg'] = 'grey'
-
     # Heading
 
-    Heading = Label(root1, text="Astrologer's Stars", bd=5, font='Aerial 22 underline', bg='black', fg='white')
+    Heading = CTkLabel(root1, text="Astrologer's Stars", font=headingFont)
     Heading.pack(pady=10, ipadx=10)
 
     # Creating a frame.
 
-    f1 = Frame(root1, bd=20)
-    f1.pack()
+    f1 = CTkFrame(root1)
+    f1.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+    switch_var = customtkinter.StringVar(value="dark")
+
+    CTkLabel(root1, text="🌙").place(relx=0.77, rely=0.09, anchor=CENTER)
+
+    switch_1 = customtkinter.CTkSwitch(root1, text="☀️", command=switch_event,
+                                       variable=switch_var, onvalue="light", offvalue="dark", )
+    switch_1.place(relx=0.9, rely=0.1, anchor=CENTER)
 
     # Content.
 
-    lb1 = Label(f1, text="Enter the value of n :", font="Arial 12")             # Creating a Label.
-    lb1.grid(row=0, column=0, pady=10, ipadx=3)
+    # Creating a Label.
+    lb1 = CTkLabel(f1, text="Enter the value of n :", font=normalFont)
+    lb1.grid(row=0, column=0, pady=10, ipadx=4, padx=5)
 
-    tip1 = Balloon()                                                            # Creating a Balloon.
-    tip1['bg'] = 'white'
-
-    en1 = Entry(f1, font="Areal 12")                                            # Creating an Entry.
-    en1.grid(row=0, column=1, pady=10)
-
-    tip1.bind_widget(en1, balloonmsg="Enter the value of n(Integer)")           # Binding the Balloon to the Entry.
+    # Creating an Entry.
+    en1 = CTkEntry(f1, font=normalFont)
+    en1.grid(row=0, column=1, pady=10, padx=10)
 
     # Repeat the same for the other Entry.
-    lb2 = Label(f1, text="Enter the bool (0 or 1) :", font="Areal 12")
+    lb2 = CTkLabel(f1, text="Select bool b :", font=normalFont)
     lb2.grid(row=1, column=0, pady=10)
 
-    tip2 = Balloon()
-    tip2['bg'] = 'white'
+    segemented_button = customtkinter.CTkSegmentedButton(root1,
+                                                         values=[
+                                                             "True", "False"],
+                                                         command=segmented_button_callback)
+    segemented_button.place(relx=0.57, rely=0.5, anchor=CENTER)
 
-    en2 = Entry(f1, font="Areal 12")
-    en2.grid(row=1, column=1, pady=10)
-    en2.bind("<Return>", show)                                                      # Binding the Entry to the show function.
-
-    tip2.bind_widget(en2, balloonmsg=" Enter the value of bool(1 or 0)")
-
-    tip3 = Balloon()
-    tip3['bg'] = 'white'
-
-    bt1 = Button(f1, text="Show", cursor='hand2', font="Arial 12")                  # Creating a Button.
+    # Creating a Button.
+    bt1 = CTkButton(f1, text="Show", cursor='hand2', font=normalFont)
     bt1.grid(row=2, columnspan=2, pady=10, ipadx=7)
 
-    bt1.bind("<Button-1>", show)                                                    # Binding the Button to the show function.
+    # Binding the Button to the show function.
+    bt1.bind("<Button-1>", show)
 
-    tip3.bind_widget(bt1, balloonmsg="Click to view the Pattern.")                  # Binding the Balloon to the Button.
-
-    root1.mainloop()                                                                # Mainloop of root1.
+    # Mainloop of root1.
+    root1.mainloop()
