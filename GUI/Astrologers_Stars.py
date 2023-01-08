@@ -16,6 +16,7 @@ def switch_event():
 
 
 theme = "dark"
+customtkinter.set_appearance_mode(theme)
 # Setting the appearance mode of the window.
 customtkinter.set_default_color_theme("green")
 
